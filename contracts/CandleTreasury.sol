@@ -8,24 +8,18 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-/* 
+/*
 
-      _____________________________________
-     |                                     |
-     |                  The                |
-     |               ARBIDUDES             |
-     |      https://www.arbidudes.xyz/     |
-     |          Twitter: @ArbiDudes        |
-     |_____________________________________|
+
 
                Proud member of
       ___________________________________
      |                                   |
      |                The                |
      |            NFT Alliance           |
-     |    https://www.nftalliance.xyz/   |
+     |    https://www.candlelabs.org/   |
      |___________________________________|
-     
+
 
 //////////////////////////////////////////////////
 /////////////@@@@@@@@@@@//////////////////////////
@@ -50,7 +44,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 */
 
-contract NFTBoilerplate is
+contract CandleTreasury is
   ERC721,
   ERC721Enumerable,
   Pausable,
@@ -59,9 +53,9 @@ contract NFTBoilerplate is
 {
   using Counters for Counters.Counter;
 
-  uint256 public price = 50000000000000000; //0.05 ETH
-  uint256 private _maxSupply = 10000;
-  uint256 private _maxMintAmount = 20;
+  uint256 public price = 5000000000000000000000000; //5000000 CNDL
+  uint256 private _maxSupply = 100;
+  uint256 private _maxMintAmount = 10;
   mapping(address => bool) public whitelisted;
 
   Counters.Counter private _tokenIdCounter;
@@ -69,7 +63,7 @@ contract NFTBoilerplate is
   event NFTCreated(uint256 indexed tokenId);
 
   constructor(string memory newBaseURI, uint256 newMaxSupply)
-    ERC721("NFTBoilerplate", "NFT")
+    ERC721("CandleTreasury", "CT")
   {
     setBaseURI(newBaseURI);
     setMaxSupply(newMaxSupply);
@@ -119,7 +113,7 @@ contract NFTBoilerplate is
   // Mint
   modifier tokenMintable(uint256 tokenId) {
     require(tokenId > 0 && tokenId <= _maxSupply, "Token ID invalid");
-    require(price <= msg.value, "Ether value sent is not correct");
+    require(price <= msg.value, "Candle value sent is not correct");
     _;
   }
 
@@ -163,9 +157,9 @@ contract NFTBoilerplate is
     uint256 supply = totalSupply();
     address to = _msgSender();
     require(_num > 0, "The minimum is one token");
-    require(_num <= _maxMintAmount, "You can mint a max of 20 tokens");
+    require(_num <= _maxMintAmount, "You can mint a max of 10 tokens");
     require(supply + _num <= _maxSupply, "Exceeds maximum supply");
-    require(msg.value >= price * _num, "Ether sent is not enough");
+    require(msg.value >= price * _num, "Candle sent is not enough");
 
     for (uint256 i; i < _num; i++) {
       uint256 tokenId = _tokenIdCounter.current();
@@ -198,7 +192,7 @@ contract NFTBoilerplate is
     }
   }
 
-  // Whitelist managment
+  // Whitelist management
   function addToWhitelist(address account) public onlyOwner {
     uint256 num = balanceOf(account);
     if (num == 0) {

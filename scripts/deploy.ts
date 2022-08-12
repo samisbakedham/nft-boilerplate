@@ -14,12 +14,12 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Factory = await ethers.getContractFactory("NFTBoilerplate");
+  const Factory = await ethers.getContractFactory("CandleTreasury");
   const contract = await Factory.deploy("https://baseUri/", 10000);
 
   await contract.deployed();
 
-  console.log("NFTBoilerplate deployed to:", contract.address);
+  console.log("CandleTreasury deployed to:", contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
