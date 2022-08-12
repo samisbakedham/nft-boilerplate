@@ -5,7 +5,7 @@ import { ethers } from "hardhat";
 
 const OWNABLE_MSG = "Ownable: caller is not the owner";
 
-describe("NFTBoilerplate", function () {
+describe("CandleTreasury", function () {
   let contract: Contract;
   let owner: SignerWithAddress;
   let address1: SignerWithAddress;
@@ -13,15 +13,15 @@ describe("NFTBoilerplate", function () {
   let address3: SignerWithAddress;
 
   beforeEach(async () => {
-    const ContractFactory = await ethers.getContractFactory("NFTBoilerplate");
+    const ContractFactory = await ethers.getContractFactory("CandleTreasury");
     [owner, address1, address2, address3] = await ethers.getSigners();
     contract = await ContractFactory.deploy("https://baseUri/", 10000);
   });
 
   // Correct deployment
   it("Should initialize contract with name, symbol, baseUri and token counter", async () => {
-    expect(await contract.symbol()).to.equal("NFT");
-    expect(await contract.name()).to.equal("NFTBoilerplate");
+    expect(await contract.symbol()).to.equal("CT");
+    expect(await contract.name()).to.equal("CandleTreasury");
     expect(await contract.getCurrentTokenId()).to.equal(1);
     // mint a token and get tokenUri
     await contract.connect(owner).ownerClaim({ value: 0 });
@@ -38,7 +38,7 @@ describe("NFTBoilerplate", function () {
   it("Should has the right price after being deployed", async () => {
     const price = await contract.price();
     const formatedPrice = ethers.utils.formatEther(price);
-    expect(formatedPrice).to.equal("0.05");
+    expect(formatedPrice).to.equal("5000000.0");
   });
 
   it("Should set the price correctly", async () => {
@@ -451,7 +451,7 @@ describe("NFTBoilerplate", function () {
   });
 
   it("Should not mint more than maxSupply", async () => {
-    const factory = await ethers.getContractFactory("NFTBoilerplate");
+    const factory = await ethers.getContractFactory("CandleTreasury");
     const contractLimit = await factory.deploy("https://baseUri/", 2);
     const price = await contractLimit.price();
 
@@ -467,7 +467,7 @@ describe("NFTBoilerplate", function () {
   });
 
   it("Should not safeMint more than maxSupply", async () => {
-    const factory = await ethers.getContractFactory("NFTBoilerplate");
+    const factory = await ethers.getContractFactory("CandleTreasury");
     const contractLimit = await factory.deploy("https://baseUri/", 2);
 
     contractLimit.connect(owner).safeMint(address1.address);
@@ -486,7 +486,7 @@ describe("NFTBoilerplate", function () {
   });
 
   it("Should not ownerClaim more than maxSupply", async () => {
-    const Factory = await ethers.getContractFactory("NFTBoilerplate");
+    const Factory = await ethers.getContractFactory("CandleTreasury");
     const contractLimit = await Factory.deploy("https://baseUri/", 2);
 
     await contractLimit.connect(owner).ownerClaim();
@@ -506,7 +506,7 @@ describe("NFTBoilerplate", function () {
   });
 
   it("Should not mint multiple more than maxSupply", async () => {
-    const Factory = await ethers.getContractFactory("NFTBoilerplate");
+    const Factory = await ethers.getContractFactory("CandleTreasury");
     const max = 5;
     const contractLimit = await Factory.deploy("https://baseUri/", max);
     const price = await contractLimit.price();
@@ -523,7 +523,7 @@ describe("NFTBoilerplate", function () {
   });
 
   it("Should not ownerClaim multiple more than maxSupply", async () => {
-    const Factory = await ethers.getContractFactory("NFTBoilerplate");
+    const Factory = await ethers.getContractFactory("CandleTreasury");
     const max = 5;
     const contractLimit = await Factory.deploy("https://baseUri/", max);
 
